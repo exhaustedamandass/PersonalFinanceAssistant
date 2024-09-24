@@ -8,5 +8,8 @@
         "DOTNET_ENVIRONMENT": "Development"
       }
     }
+  },
+  "PersonlaFinanceAssistant" : {
+    
   }
 }
