@@ -1,4 +1,5 @@
-﻿using PersonalFinanceAssistant.Entities;
+﻿using Application.Dtos;
+using PersonalFinanceAssistant.Entities;
 
 namespace PersonalFinanceAssistant.Services;
 
@@ -10,11 +11,13 @@ public interface IAccountService
 
     void ChangeBalance(decimal changeValue);
 
-    Task<List<Transaction>> GetAllTransactionsAsync(string accountId);
+    List<Transaction>? GetAllTransactions(int accountId);
 
-    Task<List<Account>> GetAllAccountsAsync();
+    List<Account> GetAllAccounts();
 
     void AddTransaction(Transaction newTransaction);
 
-    void CreateNewAccount(Account account);
+    bool CreateNewAccount(AccountDto account);
+    
+    public bool IsDuplicateAccount(AccountDto accountDto);
 }

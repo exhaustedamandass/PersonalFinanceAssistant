@@ -2,8 +2,8 @@
 
 public sealed class Account : Resource
 {
-    public string Id { get; set; }
+    public int Id { get; set; }
     public string Name { get; set; }
     public decimal Balance { get; set; }
-    public List<Transaction> Transactions { get; set; }
+    public List<Transaction>? Transactions { get; set; }
 }

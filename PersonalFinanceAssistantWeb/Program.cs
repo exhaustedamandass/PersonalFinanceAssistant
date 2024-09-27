@@ -1,3 +1,4 @@
+using Application.Mappers;
 using Infrastructure.Data;
 using Infrastructure.Seeds;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(options => 
     options.UseSqlite("Data Source=:memory:"));  // In-memory SQLite DB for testing
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 var app = builder.Build();
 

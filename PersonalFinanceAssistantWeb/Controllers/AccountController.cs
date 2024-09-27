@@ -21,24 +21,56 @@ public class AccountController : Controller
     [ProducesResponseType(404)]
     public IActionResult GetAllTransactions(int accountId)
     {
-        throw new NotImplementedException();
+        var transactions = _accountService.GetAllTransactions(accountId);
+        
+        if (transactions == null || transactions.Count == 0)
+        {
+            return NotFound($"Account with ID {accountId} not found or has no transactions.");
+        }
+
+        return Ok(transactions);
     }
 
+    //TODO : account for some error in db???
+    
     [HttpGet]
     [ProducesResponseType(200, Type = typeof(List<Account>))]
-    [ProducesResponseType(400)]
     public IActionResult GetAllAccounts()
     {
-        throw new NotImplementedException();
+        return Ok(_accountService.GetAllAccounts());
     }
-
-
+    
     [HttpPost]
     [ProducesResponseType(201)]
-    [ProducesResponseType(400)]
+    [ProducesResponseType(400)] 
+    [ProducesResponseType(409)] 
+    [ProducesResponseType(500)] 
     public IActionResult CreateAccount([FromBody] AccountDto accountDto)
     {
-        throw new NotImplementedException();
+        // Check if the incoming data is valid
+        if (accountDto == null || !ModelState.IsValid)
+        {
+            return BadRequest("Invalid account data.");  // 400 Bad Request
+        }
+
+        // Let the service handle account creation including mapping
+        var accountCreated = _accountService.CreateNewAccount(accountDto);
+
+        if (accountCreated)
+        {
+            // Return 201 Created with a location header
+            return CreatedAtAction(nameof(CreateAccount), new { accountId = accountDto. }, accountDto);
+        }
+        else
+        {
+            // Handle conflict or internal server errors
+            if (_accountService.IsDuplicateAccount(accountDto))
+            {
+                return Conflict("Account with the same name already exists.");  // 409 Conflict
+            }
+
+            return StatusCode(500, "An error occurred while creating the account.");  // 500 Internal Server Error
+        }
     }
 
     [HttpPost("{accountId}")]
