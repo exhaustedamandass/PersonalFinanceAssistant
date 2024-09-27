@@ -16,4 +16,8 @@
     <ItemGroup>
       <ProjectReference Include="..\PersonalFinanceAssistant\Domain.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Repositories\" />
+    </ItemGroup>
 </Project>

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Application.Dtos;
+using Microsoft.AspNetCore.Mvc;
 using PersonalFinanceAssistant.Entities;
 using PersonalFinanceAssistant.Services;
 
@@ -30,19 +31,29 @@ public class AccountController : Controller
     {
         throw new NotImplementedException();
     }
-    
-    
-    // Get: /transactions
-    [HttpGet]
-    public async Task<IActionResult> GetTransactionsAsync(string accountId)
+
+
+    [HttpPost]
+    [ProducesResponseType(201)]
+    [ProducesResponseType(400)]
+    public IActionResult CreateAccount([FromBody] AccountDto accountDto)
     {
-        var transactions = await _accountService.GetAllTransactionsAsync(accountId);
-        return Ok(transactions);
+        throw new NotImplementedException();
     }
-    
-    
-    
-    
-    
-    
+
+    [HttpPost("{accountId}")]
+    [ProducesResponseType(202)]
+    [ProducesResponseType(400)]
+    public IActionResult CreateTransaction(int accountId,[FromBody] TransactionDto transactionDto)
+    {
+        throw new NotImplementedException();
+    }
+
+    [HttpPut("{accountId}")]
+    [ProducesResponseType(202)]
+    [ProducesResponseType(400)]
+    public IActionResult UpdateAccountName(int accountId, [FromBody] AccountDto accountDto)
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -1,4 +1,6 @@
-﻿namespace PersonalFinanceAssistant.Services;
+﻿using PersonalFinanceAssistant.Entities;
+
+namespace PersonalFinanceAssistant.Services;
 
 public class BudgetService : IBudgetService
 {
@@ -38,6 +40,11 @@ public class BudgetService : IBudgetService
     }
 
     public void AddBudgetCategory(string newBudgetCategory)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Budget GetBudget(string budgetId)
     {
         throw new NotImplementedException();
     }

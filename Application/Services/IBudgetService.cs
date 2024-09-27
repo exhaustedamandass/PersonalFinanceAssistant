@@ -20,4 +20,6 @@ public interface IBudgetService
     void DeleteBudget(string budgetId);
 
     void AddBudgetCategory(string newBudgetCategory);
+
+    public Budget GetBudget(string budgetId);
 }
