@@ -16,10 +16,10 @@ public class AccountController : Controller
         _accountService = accountService;
     }
 
-    [HttpGet("{accountId}")]
+    [HttpGet("{accountId:guid}")]
     [ProducesResponseType(200, Type = typeof(List<Transaction>))]
     [ProducesResponseType(404)]
-    public IActionResult GetAllTransactions(int accountId)
+    public IActionResult GetAllTransactions(Guid accountId)
     {
         var transactions = _accountService.GetAllTransactions(accountId);
         
@@ -32,13 +32,14 @@ public class AccountController : Controller
     }
 
     //TODO : account for some error in db???
-    
     [HttpGet]
     [ProducesResponseType(200, Type = typeof(List<Account>))]
     public IActionResult GetAllAccounts()
     {
         return Ok(_accountService.GetAllAccounts());
     }
+    
+    //TODO : refactor this part
     
     [HttpPost]
     [ProducesResponseType(201)]
@@ -48,7 +49,7 @@ public class AccountController : Controller
     public IActionResult CreateAccount([FromBody] AccountDto accountDto)
     {
         // Check if the incoming data is valid
-        if (accountDto == null || !ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
             return BadRequest("Invalid account data.");  // 400 Bad Request
         }
@@ -64,28 +65,59 @@ public class AccountController : Controller
         else
         {
             // Handle conflict or internal server errors
-            if (_accountService.IsDuplicateAccount(accountDto))
-            {
-                return Conflict("Account with the same name already exists.");  // 409 Conflict
-            }
-
-            return StatusCode(500, "An error occurred while creating the account.");  // 500 Internal Server Error
+            return _accountService.IsDuplicateAccount(accountDto)
+                ? Conflict("Account with the same name already exists.")
+                : // 409 Conflict
+                StatusCode(500, "An error occurred while creating the account."); // 500 Internal Server Error
         }
     }
 
-    [HttpPost("{accountId}")]
+    [HttpPost("{accountId:guid}")]
     [ProducesResponseType(202)]
     [ProducesResponseType(400)]
-    public IActionResult CreateTransaction(int accountId,[FromBody] TransactionDto transactionDto)
+    public IActionResult CreateTransaction(Guid accountId,[FromBody] TransactionDto transactionDto)
     {
-        throw new NotImplementedException();
+        // Call the service to add the transaction
+        try
+        {
+            _accountService.AddTransaction(accountId, transactionDto);
+            return Accepted(); // 202 Accepted
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message); // 404 Not Found
+        }
+        catch (Exception ex)
+        {
+            // Log the exception if necessary
+            return StatusCode(500, "Internal server error"); // 500 Internal Server Error
+        }
     }
 
-    [HttpPut("{accountId}")]
+    [HttpPut("{accountId:guid}")]
     [ProducesResponseType(202)]
     [ProducesResponseType(400)]
-    public IActionResult UpdateAccountName(int accountId, [FromBody] AccountDto accountDto)
+    public IActionResult UpdateAccountName(Guid accountId, [FromBody] AccountDto accountDto)
     {
-        throw new NotImplementedException();
+        if (string.IsNullOrWhiteSpace(accountDto.Name))
+        {
+            return BadRequest("Account data is null or the name is empty.");
+        }
+
+        // Call the service to update the account name
+        try
+        {
+            _accountService.UpdateAccountName(accountId, accountDto.Name);
+            return Accepted(); // 202 Accepted
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message); // 404 Not Found
+        }
+        catch (Exception ex)
+        {
+            // Log the exception if necessary
+            return StatusCode(500, "Internal server error"); // 500 Internal Server Error
+        }
     }
 }

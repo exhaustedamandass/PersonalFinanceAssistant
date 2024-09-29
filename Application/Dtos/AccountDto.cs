@@ -2,6 +2,6 @@ namespace Application.Dtos;
 
 public class AccountDto
 {
-    public string Name { get; set; }
-    public int id { get; set; }
+    public string AccountName { get; set; }
+    public int Id { get; set; }
 }

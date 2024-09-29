@@ -9,5 +9,9 @@ public class MappingProfile : Profile
     public MappingProfile()
     {
         CreateMap<AccountDto, Account>();
+        CreateMap<TransactionDto, Transaction>();
+        CreateMap<Transaction, TransactionDto>();
+        CreateMap<BudgetDto, Budget>();
+        CreateMap<ReportDto, Report>();
     }
 }

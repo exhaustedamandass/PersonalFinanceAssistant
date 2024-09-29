@@ -1,16 +1,17 @@
-﻿using PersonalFinanceAssistant.Entities;
+﻿using Application.Dtos;
+using PersonalFinanceAssistant.Entities;
 
 namespace PersonalFinanceAssistant.Services;
 
 public interface ITransactionService
 {
-    Task<List<Transaction>> GetTransactionsAsync(string userId);
+    List<Transaction> GetTransactions();
 
-    Task<Transaction> GetSingleTransactionAsync(string transactionId);
+    Transaction? GetSingleTransaction(Guid transactionId);
 
-    void DeleteTransaction(string transactionId);
+    bool DeleteTransaction(Guid transactionId);
 
-    void UpdateTransaction(string transactionId, Transaction newTransaction);
+    bool UpdateTransaction(Guid transactionId, TransactionDto transactionDto);
 
-    void CreateTransaction(Transaction newTransaction);
+    bool CreateTransaction(TransactionDto transactionDto);
 }

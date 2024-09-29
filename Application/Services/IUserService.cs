@@ -1,18 +1,19 @@
+using Application.Dtos;
 using PersonalFinanceAssistant.Entities;
 
 namespace PersonalFinanceAssistant.Services;
 
 public interface IUserService
 {
-    public void UpdateUserName(string userName);
+    public bool UpdateUserName(Guid userId, string userName);
 
-    public void UpdateEmail(string email);
+    public bool UpdateEmail(Guid userId, string userName);
 
-    public void DeleteAccount(string accountId);
+    public bool DeleteAccount(Guid userId, Guid accountId);
 
-    public void DeleteBudget(string budgetId);
+    public bool DeleteBudget(Guid userId, Guid budgetId);
 
-    public void AddAccount(Account account);
+    public bool AddAccount(Guid userId ,AccountDto accountDto);
 
-    public void AddBudget(Budget budget);
+    public bool AddBudget(Guid userId ,BudgetDto account);
 }

@@ -5,17 +5,17 @@ namespace PersonalFinanceAssistant.Services;
 
 public interface IAccountService
 {
-    void UpdateAccountName(string newAccountName);
+    void UpdateAccountName(Guid accountId, string newAccountName);
 
     void UpdateAccountBalance(decimal newBalanceValue);
 
     void ChangeBalance(decimal changeValue);
 
-    List<Transaction>? GetAllTransactions(int accountId);
+    List<Transaction>? GetAllTransactions(Guid accountId);
 
     List<Account> GetAllAccounts();
 
-    void AddTransaction(Transaction newTransaction);
+    void AddTransaction(Guid accountId, TransactionDto transactionDto);
 
     bool CreateNewAccount(AccountDto account);
     

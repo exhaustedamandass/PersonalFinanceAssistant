@@ -15,13 +15,22 @@ public class TransactionController : Controller
         _transactionService = transactionService;
     }
 
-    [HttpDelete("{transactionId}")]
+    [HttpDelete("{transactionId:guid}")]
     [ProducesResponseType(400)]
     [ProducesResponseType(204)]
     [ProducesResponseType(404)]
-    public IActionResult DeleteTransaction(int transactionId)
+    public IActionResult DeleteTransaction(Guid transactionId)
     {
-        throw new NotImplementedException();
+        var result = _transactionService.DeleteTransaction(transactionId);
+
+        // If the transaction was not found, return 404
+        if (!result)
+        {
+            return NotFound("Transaction not found.");
+        }
+
+        // If the transaction was successfully deleted, return 204 No Content
+        return NoContent();
     }
 
     [HttpPost]
@@ -29,22 +38,58 @@ public class TransactionController : Controller
     [ProducesResponseType(400)]
     public IActionResult CreateTransaction([FromBody] TransactionDto transactionDto)
     {
-        throw new NotImplementedException();
+        if (transactionDto.Amount <= 0)
+        {
+            return BadRequest("Invalid transaction data.");
+        }
+
+        // Call the service to create the transaction
+        var result = _transactionService.CreateTransaction(transactionDto);
+
+        if (!result)
+        {
+            return BadRequest("Failed to create the transaction.");
+        }
+
+        return StatusCode(201); // 201 Created
     }
 
-    [HttpGet("{transactionId}")]
-    [ProducesResponseType(200, Type = typeof(Transaction))]
+    [HttpGet("{transactionId:guid}")]
+    [ProducesResponseType(200, Type = typeof(TransactionDto))]
     [ProducesResponseType(404)]
-    public IActionResult GetTransaction(int transactionId)
+    public IActionResult GetTransaction(Guid transactionId)
     {
-        throw new NotImplementedException();
+        // Call the service to retrieve the transaction
+        var transaction = _transactionService.GetSingleTransaction(transactionId);
+
+        // If the transaction is not found, return 404 Not Found
+        if (transaction == null)
+        {
+            return NotFound("Transaction not found.");
+        }
+
+        // Return the transaction with a 200 OK status
+        return Ok(transaction);
     }
 
-    [HttpPut ("{transactionId}")]
+    [HttpPut ("{transactionId:guid}")]
     [ProducesResponseType(202)]
     [ProducesResponseType(400)]
-    public IActionResult UpdateTransaction(int transactionId, [FromBody] TransactionDto transactionDto)
+    public IActionResult UpdateTransaction(Guid transactionId, [FromBody] TransactionDto transactionDto)
     {
-        throw new NotImplementedException();
+        if (transactionDto.Amount <= 0)
+        {
+            return BadRequest("Invalid transaction data.");
+        }
+
+        // Call the service to update the transaction
+        var result = _transactionService.UpdateTransaction(transactionId, transactionDto);
+
+        if (!result)
+        {
+            return BadRequest("Failed to update the transaction or transaction not found.");
+        }
+
+        return Accepted(); // 202 Accepted
     }
 }

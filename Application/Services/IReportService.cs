@@ -1,19 +1,22 @@
 ﻿using System.Reflection.Metadata;
+using Application.Dtos;
 using PersonalFinanceAssistant.Entities;
 
 namespace PersonalFinanceAssistant.Services;
 
 public interface IReportService
 {
-    Task<Report> GetReportByUserAsync(string userId);
+    ReportDto? GetReportByUser(Guid userId, Guid reportId);
 
-    Task<List<Report>> GetAllReportsByUserAsync(string userId);
+    List<ReportDto> GetAllReportsByUser(Guid userId);
 
-    Task<Report> GetReportByIdAsync(string reportId);
+    Report GetReportById(Guid reportId);
 
-    void UpdateReport(string reportId, Report newReport);
+    void UpdateReport(Guid reportId, Report newReport);
 
-    void AddReport(Report newReport);
+    ReportDto? GenerateReport(Guid userId);
 
-    void DeleteReport(string reportId);
+    void AddReport(Guid userId, ReportDto newReport);
+
+    bool DeleteReport(Guid userId, Guid reportId);
 }

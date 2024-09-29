@@ -1,12 +1,13 @@
-﻿using PersonalFinanceAssistant.Entities;
+﻿using Application.Dtos;
+using PersonalFinanceAssistant.Entities;
 
 namespace PersonalFinanceAssistant.Services;
 
 public interface IBudgetService
 {
-    void UpdateLimit(decimal newLimit);
+    bool UpdateLimit(Guid budgetId, BudgetDto budgetDto);
 
-    void UpdateSpent(decimal newSpent);
+    bool UpdateSpent(Guid budgetId, BudgetDto budgetDto);
 
     void UpdateCategoryId(BudgetCategories newCategory);
 
@@ -14,12 +15,11 @@ public interface IBudgetService
 
     void UpdatePeriodEnd(DateTime newEndPeriod);
 
-    void CreateNewBudget(BudgetCategories budgetCategory, decimal limit, DateTime periodStart,
-        DateTime periodEnd);
+    bool CreateNewBudget(BudgetDto budgetDto);
 
-    void DeleteBudget(string budgetId);
+    bool DeleteBudget(Guid budgetId);
 
     void AddBudgetCategory(string newBudgetCategory);
 
-    public Budget GetBudget(string budgetId);
+    public Budget? GetBudget(Guid budgetId);
 }
