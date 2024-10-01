@@ -8,8 +8,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Configure DbContext with a persistent connection to an in-memory SQLite database
 builder.Services.AddDbContext<DataContext>(options => 
-    options.UseSqlite("Data Source=:memory:"));  // In-memory SQLite DB for testing
+    options.UseSqlite("Data Source=InMemorySample;Mode=Memory;Cache=Shared")); // Persistent in-memory database
+
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 var app = builder.Build();
@@ -21,7 +24,8 @@ using (var scope = app.Services.CreateScope())
     var context = services.GetRequiredService<DataContext>();
 
     // Ensure database is created
-    context.Database.EnsureCreated();
+    context.Database.OpenConnection(); // Keep the in-memory DB open
+    context.Database.EnsureCreated();  // Create the database structure
 
     // Seed the data
     var seed = new Seed(context);
@@ -37,21 +41,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-//TODO : rewrite this
-
-
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", async (DataContext context) =>
-    {
-        // Use DataContext within the endpoint
-        var categories = await context.Categories.ToListAsync();
-        return categories; // Just an example, modify based on your needs
-    })
-    .WithName("GetWeatherForecast")
-    .WithOpenApi();
-
 app.Run();
+
+//TODO : rewrite this

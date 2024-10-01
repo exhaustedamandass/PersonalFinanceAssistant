@@ -60,7 +60,7 @@ public class AccountController : Controller
         if (accountCreated)
         {
             // Return 201 Created with a location header
-            return CreatedAtAction(nameof(CreateAccount), new { accountId = accountDto. }, accountDto);
+            return CreatedAtAction(nameof(CreateAccount), new { accountId = accountDto.Id }, accountDto);
         }
         else
         {
@@ -99,7 +99,7 @@ public class AccountController : Controller
     [ProducesResponseType(400)]
     public IActionResult UpdateAccountName(Guid accountId, [FromBody] AccountDto accountDto)
     {
-        if (string.IsNullOrWhiteSpace(accountDto.Name))
+        if (string.IsNullOrWhiteSpace(accountDto.AccountName))
         {
             return BadRequest("Account data is null or the name is empty.");
         }
@@ -107,7 +107,7 @@ public class AccountController : Controller
         // Call the service to update the account name
         try
         {
-            _accountService.UpdateAccountName(accountId, accountDto.Name);
+            _accountService.UpdateAccountName(accountId, accountDto.AccountName);
             return Accepted(); // 202 Accepted
         }
         catch (KeyNotFoundException ex)

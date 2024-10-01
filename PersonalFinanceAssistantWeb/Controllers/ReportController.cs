@@ -70,14 +70,14 @@ public class ReportController : Controller
     public IActionResult DeleteReport(Guid userId, Guid reportId)
     {
         // Call the service to delete the report
-        var result = _reportService.DeleteReport(userId, reportId);
+    var result = _reportService.DeleteReport(userId, reportId);
 
-        if (!result)
-        {
-            return NotFound("Report not found or user unauthorized to delete the report.");
-        }
+    if (!result)
+    {
+        return NotFound("Report not found or user unauthorized to delete the report.");
+    }
 
-        // Return 200 OK if deletion was successful
-        return Ok("Report successfully deleted.");
+    // Return 200 OK if deletion was successful
+    return Ok("Report successfully deleted.");
     }
 }

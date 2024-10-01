@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PersonalFinanceAssistant.Entities;
 
-public sealed class User : Resource
+public sealed class User 
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
