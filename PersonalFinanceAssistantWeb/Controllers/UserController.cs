@@ -4,6 +4,8 @@ using PersonalFinanceAssistant.Services;
 
 namespace PersonalFinanceAssistantWeb.Controllers;
 
+[Route("api/[controller]")]
+[ApiController]
 public class UserController : Controller
 {
     private IUserService _userService;
@@ -13,6 +15,15 @@ public class UserController : Controller
         _userService = userService;
     }
 
+    [HttpGet]
+    [ProducesResponseType(200, Type = typeof(List<UserDto>))]
+    public IActionResult GetUsers()
+    {
+        var result = _userService.GetUsers();
+        return Ok(result);
+    }
+    
+    
     [HttpPut ("{userId:guid}/username")]
     [ActionName("UpdateUserName")]
     [ProducesResponseType(202)]

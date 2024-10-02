@@ -147,4 +147,11 @@ public class UserService : IUserService
 
         return true;
     }
+
+    public List<UserDto> GetUsers()
+    {
+        var users = _context.Users.ToList();
+        var usersDtoList = users.Select(user => _mapper.Map<UserDto>(user)).ToList();
+        return usersDtoList; 
+    }
 }

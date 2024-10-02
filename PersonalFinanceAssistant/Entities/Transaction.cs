@@ -13,5 +13,6 @@ public sealed class Transaction
     public decimal Amount { get; set; } 
     public TransactionType Type { get; set; }
     public Guid CategoryId { get; set; }
-    public Guid AccountId { get; set; } 
+    public Guid AccountId { get; set; }
+    public Account Account { get; set; }
 }

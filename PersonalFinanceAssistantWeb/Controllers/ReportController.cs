@@ -5,6 +5,8 @@ using PersonalFinanceAssistant.Services;
 
 namespace PersonalFinanceAssistantWeb.Controllers;
 
+[Route("api/[controller]")]
+[ApiController]
 public class ReportController : Controller
 {
     private IReportService _reportService;

@@ -17,46 +17,41 @@ public class DataContext : DbContext
     //Defines relationships
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        // User and Accounts relationship
         modelBuilder.Entity<User>()
             .HasMany(u => u.Accounts)
-            .WithOne()
-            .HasForeignKey(a => a.Id)
+            .WithOne(a => a.User)
+            .HasForeignKey(a => a.UserId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        // Define the one-to-many relationship between User and Budgets
+        // User and Budgets relationship
         modelBuilder.Entity<User>()
             .HasMany(u => u.Budgets)
-            .WithOne()
-            .HasForeignKey(b => b.Id)
+            .WithOne(b => b.User)
+            .HasForeignKey(b => b.UserId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        // Define the one-to-many relationship between Account and Transactions
+        // Account and Transactions relationship
         modelBuilder.Entity<Account>()
-            .HasOne(a => a.User)
-            .WithMany(u => u.Accounts)
-            .HasForeignKey(a => a.UserId)
-            .OnDelete(DeleteBehavior.Cascade); 
+            .HasMany(a => a.Transactions)
+            .WithOne(t => t.Account)
+            .HasForeignKey(t => t.AccountId)
+            .OnDelete(DeleteBehavior.Cascade);
 
-        // Define the many-to-one relationship between Transaction and Account
-        modelBuilder.Entity<Transaction>()
-            .HasOne<Account>()
-            .WithMany(a => a.Transactions)
-            .HasForeignKey(t => t.AccountId);
-
-        // Define the one-to-many relationship between Report and Transactions
+        // Report has many Transactions (no reverse relationship)
         modelBuilder.Entity<Report>()
             .HasMany(r => r.Transactions)
-            .WithOne()
-            .HasForeignKey(t => t.Id)  // Adjust according to your reporting logic
-            .OnDelete(DeleteBehavior.Cascade);
-        
+            .WithMany() // No back reference to Report in Transaction
+            .UsingEntity(j => j.ToTable("ReportTransactions")); // Join table
+
+        // Budget and User relationship
         modelBuilder.Entity<Budget>()
             .HasOne(b => b.User)
             .WithMany(u => u.Budgets)
             .HasForeignKey(b => b.UserId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        // Customize properties if needed
+        // Set the precision for Transaction Amount
         modelBuilder.Entity<Transaction>()
             .Property(t => t.Amount)
             .HasColumnType("decimal(18,2)");

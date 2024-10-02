@@ -6,6 +6,7 @@ using PersonalFinanceAssistant.Services;
 namespace PersonalFinanceAssistantWeb.Controllers;
 
 [Route("api/[controller]")]
+[ApiController]
 public class TransactionController : Controller
 {
     private ITransactionService _transactionService;

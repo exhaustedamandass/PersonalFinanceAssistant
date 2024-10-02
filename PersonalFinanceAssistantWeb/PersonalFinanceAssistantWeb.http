@@ -1,6 +1,6 @@
 @PersonalFinanceAssistantWeb_HostAddress = http://localhost:5132
 
-GET {{PersonalFinanceAssistantWeb_HostAddress}}/weatherforecast/
+GET {{PersonalFinanceAssistantWeb_HostAddress}}/api/Account/
 Accept: application/json
 
 ###

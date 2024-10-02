@@ -16,4 +16,6 @@ public interface IUserService
     public bool AddAccount(Guid userId ,AccountDto accountDto);
 
     public bool AddBudget(Guid userId ,BudgetDto account);
+
+    List<UserDto> GetUsers();
 }
