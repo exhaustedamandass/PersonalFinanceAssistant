@@ -79,7 +79,7 @@ public class AccountService : IAccountService
 
         return account?.Transactions;
     }
-
+        
     public List<Account> GetAllAccounts()
     {
         return _context.Accounts.ToList();
